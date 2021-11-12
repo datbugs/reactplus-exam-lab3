@@ -13,6 +13,10 @@ const API = {
     delete(id: number){
         const url = `/todos/${id}`;
         return Client.delete(url);
+    },
+    update(id : number | string, data : TodoListProp) {
+        const url = `/todos/${id}`;
+        return Client.put(url, data);
     }
 
 }

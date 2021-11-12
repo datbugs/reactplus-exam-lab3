@@ -10,6 +10,7 @@ import './App.css';
 function App() {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentTodo, setCurrentTodo] = useState<TodoListProp | null>(null)
     const [todoList, setTodoList] = useState<TodoListProp[]>([
     ]);
 
@@ -21,6 +22,7 @@ function App() {
     const handleCancel = () => {
         setIsModalVisible(false)
     }
+
 
     useEffect(() => {
         const getTodo = async () => {
@@ -50,6 +52,33 @@ function App() {
             console.log(error);
         }
     }
+    const handleClose = () => {
+        setIsModalVisible(false);
+    }
+    const handleEditTodo = (todo: TodoListProp) => {
+        // console.log(itemProduct);
+        setCurrentTodo(todo);
+        setIsModalVisible(true);
+    }
+    const handleUpdateTodo = async (todo: TodoListProp) => {
+        const list = todoList.map((item) => {
+            if (item.id === todo.id) {
+                return {
+                    ...todo
+                }
+            }
+            return item;
+        })
+        handleClose();
+        try {
+            await API.update(todo.id, todo);
+            setTodoList(list);
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
 
     return (
         <div className="App">
@@ -59,9 +88,9 @@ function App() {
                     Add New Todo
                 </button>
             </div>
-            <ListTodo todoList={todoList} onDelete={handleDeleteTodo} />
+            <ListTodo todoList={todoList} onDelete={handleDeleteTodo} onEditTodo={handleEditTodo}/>
             <Modal title="Add Todo" visible={isModalVisible} footer={null} onCancel={handleCancel} >
-                <AddTodoForm todoList={todoList} onAdd={handleAddTodo} onCancel={handleCancel} />
+                <AddTodoForm currentTodo={currentTodo} todoList={todoList} onAdd={handleAddTodo} onEdit={handleUpdateTodo} onCancel={handleCancel} onClose={handleClose} />
             </Modal>
         </div>
     );

@@ -7,7 +7,7 @@ interface Props {
     onDelete: (param: TodoListProp) => void
 }
 
-export const ListTodo = ({ todoList, onDelete }: any) => {
+export const ListTodo = ({ todoList, onDelete, onEditTodo}: any) => {
     return (
         <div className="ant-list-items">
             <div className="ant-list-item">
@@ -25,7 +25,7 @@ export const ListTodo = ({ todoList, onDelete }: any) => {
                                 </div>
                                 <ul className="ant-list-item-action">
                                     <li>
-                                        <button style={{backgroundColor:'#4CAF50', border:'0 solid', borderRadius:'5px'}} className="btn-edit">Edit</button>
+                                        <button onClick={() => onEditTodo(item)} style={{backgroundColor:'#4CAF50', border:'0 solid', borderRadius:'5px'}} className="btn-edit">Edit</button>
                                     </li>
                                     <li>
                                         <button style={{backgroundColor:'#f44336', border:'0 solid', borderRadius:'5px'}} className="btn-remove" onClick={() => onDelete(item.id)}>Remove</button>
